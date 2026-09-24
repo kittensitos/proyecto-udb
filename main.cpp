@@ -6,7 +6,6 @@
 
 using namespace std;
 
-//Modulo 3: Registro de estudiantes + Consultar estudiantes (Calderon Flores, Paola Giselle)
 
 void registrarEstudiante(int estcarne[], string estnombres[], string estapellidos[], int &totalestudiantes)
 {
