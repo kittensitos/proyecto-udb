@@ -7,6 +7,182 @@
 using namespace std;
 
 
+void registrarEstudiante(int estcarne[], string estnombres[], string estapellidos[], int &totalestudiantes)
+{
+    string carne, nombres, apellidos;
+    bool valido;
+    int carnenumero = 0;
+
+    if (totalestudiantes >= 50){
+        cout<<"---Registro de estudiante---"<<endl;
+        cout<<"Error: Ya no se pueden registrar mas estudiantes, el limite es 50"<<endl;
+        system("pause");
+        system("cls");
+        return;
+    }
+
+    do{
+        valido = true;
+
+        cout<<"---Registro de estudiante---"<<endl;
+        cout<<"Ingrese el carne del estudiante: ";
+        getline(cin, carne);
+
+        if (carne.empty()){
+            cout<<"Error: El carne no puede estar vacio"<<endl;
+            valido = false;
+            system("pause");
+            system("cls");
+        }
+        else{
+            for (char c: carne){
+                if(!isdigit(c)){
+                    cout<<"Error: El carne debe contener solo numeros"<<endl;
+                    valido = false;
+                    system("pause");
+                    system("cls");
+                    break;
+                }
+            }
+        }
+        if (valido && carne.length() > 9){
+            cout<<"Error: El carne no debe tener mas de 9 digitos"<<endl;
+            valido = false;
+            system("pause");
+            system("cls");
+        }
+        if (valido){
+            carnenumero = stoi(carne);
+
+            if (carnenumero <= 0){
+                cout<<"Error: El carne debe ser mayor a cero"<<endl;
+                valido = false;
+                system("pause");
+                system("cls");
+            }
+        }
+        if (valido){
+            for (int i=0; i<totalestudiantes; i++){
+                if (estcarne[i] == carnenumero){
+                    cout<<"Error: Ya existe un estudiante registrado con el carne "<<carnenumero<<endl;
+                    valido = false;
+                    system("pause");
+                    system("cls");
+                    break;
+                }
+            }
+        }
+
+    } while (!valido);
+    system("cls");
+
+    do{
+        valido = true;
+
+        cout<<"---Registro de estudiante---"<<endl;
+        cout<<"Ingrese los nombres del estudiante: ";
+        getline(cin, nombres);
+
+        if (nombres.empty()){
+            cout<<"Error: Los nombres no pueden estar vacios"<<endl;
+            valido = false;
+            system("pause");
+            system("cls");
+        }
+        else{
+            bool tieneletra = false;
+            for (char c: nombres){
+                if (isalpha(c)){
+                    tieneletra = true;
+                }
+                else if (c != ' '){
+                    cout<<"Error: Los nombres solo deben contener letras y espacios"<<endl;
+                    valido = false;
+                    system("pause");
+                    system("cls");
+                    break;
+                }
+            }
+            if (valido && !tieneletra){
+                cout<<"Error: Los nombres no pueden ser solo espacios"<<endl;
+                valido = false;
+                system("pause");
+                system("cls");
+            }
+        }
+
+    } while (!valido);
+    system("cls");
+
+    do{
+        valido = true;
+
+        cout<<"---Registro de estudiante---"<<endl;
+        cout<<"Ingrese los apellidos del estudiante: ";
+        getline(cin, apellidos);
+
+        if (apellidos.empty()){
+            cout<<"Error: Los apellidos no pueden estar vacios"<<endl;
+            valido = false;
+            system("pause");
+            system("cls");
+        }
+        else{
+            bool tieneletra = false;
+            for (char c: apellidos){
+                if (isalpha(c)){
+                    tieneletra = true;
+                }
+                else if (c != ' '){
+                    cout<<"Error: Los apellidos solo deben contener letras y espacios"<<endl;
+                    valido = false;
+                    system("pause");
+                    system("cls");
+                    break;
+                }
+            }
+            if (valido && !tieneletra){
+                cout<<"Error: Los apellidos no pueden ser solo espacios"<<endl;
+                valido = false;
+                system("pause");
+                system("cls");
+            }
+        }
+
+    } while (!valido);
+    system("cls");
+
+    estcarne[totalestudiantes] = carnenumero;
+    estnombres[totalestudiantes] = nombres;
+    estapellidos[totalestudiantes] = apellidos;
+    totalestudiantes++;
+
+    cout<<"Estudiante registrado correctamente!"<<endl;
+    system("pause");
+    system("cls");
+}
+
+void consultarEstudiantes(int estcarne[], string estnombres[], string estapellidos[], int totalestudiantes)
+{
+    cout<<"---listado de estudiantes---"<<endl;
+
+    if (totalestudiantes == 0){
+        cout<<"No hay estudiantes registrados"<<endl;
+    }
+    else{
+        cout<<"Total de estudiantes: "<<totalestudiantes<<endl;
+        cout<<"----------------------------"<<endl;
+        for (int i=0; i<totalestudiantes; i++){
+            cout<<"Estudiante #"<<i+1<<endl;
+            cout<<"Carne: "<<estcarne[i]<<endl;
+            cout<<"Nombres: "<<estnombres[i]<<endl;
+            cout<<"Apellidos: "<<estapellidos[i]<<endl;
+            cout<<"----------------------------"<<endl;
+        }
+    }
+    system("pause");
+    system("cls");
+}
 
 int main()
 {
@@ -30,8 +206,6 @@ int main()
     int totallibros=0, totalestudiantes=0, opcion, i;
     int anioactual=2026, anio, ejemplares, opcat;
     string codigo, titulo, autor, categoria, anioingresado, categoriaingresada, ejemplaresingresados;
-    string carne, nombres, apellidos;
-    int carnenumero;
 
     //Bucle principal del sistema
 
@@ -254,165 +428,7 @@ int main()
 
                 break;
             case 2:
-                //Modulo 3: Registro de estudiantes
-
-                //Verificar que no se haya llegado al limite de 50 estudiantes
-                if (totalestudiantes >= 50){
-                    cout<<"---Registro de estudiante---"<<endl;
-                    cout<<"Error: Ya no se pueden registrar mas estudiantes, el limite es 50"<<endl;
-                    system("pause");
-                    system("cls");
-                    break;
-                }
-
-                //Validar que el carne no este vacio, sean solo numeros, maximo 9 digitos, mayor a 0 y no repetido
-                do{
-
-                    valido = true;
-
-                    cout<<"---Registro de estudiante---"<<endl;
-                    cout<<"Ingrese el carne del estudiante: ";
-                    getline(cin, carne);
-
-                    if (carne.empty()){
-                        cout<<"Error: El carne no puede estar vacio"<<endl;
-                        valido = false;
-                        system("pause");
-                        system("cls");
-                    }
-                    else{
-                        for (char c: carne){
-                            if(!isdigit(c)){
-                                cout<<"Error: El carne debe contener solo numeros"<<endl;
-                                valido = false;
-                                system("pause");
-                                system("cls");
-                                break;
-                            }
-                        }
-                    }
-                    if (valido && carne.length() > 9){
-                        cout<<"Error: El carne no debe tener mas de 9 digitos"<<endl;
-                        valido = false;
-                        system("pause");
-                        system("cls");
-                    }
-                    if (valido){
-                        carnenumero = stoi(carne);
-
-                        if (carnenumero <= 0){
-                            cout<<"Error: El carne debe ser mayor a cero"<<endl;
-                            valido = false;
-                            system("pause");
-                            system("cls");
-                        }
-                    }
-                    if (valido){
-                        for (i=0; i<totalestudiantes; i++){
-                            if (estcarne[i] == carnenumero){
-                                cout<<"Error: Ya existe un estudiante registrado con el carne "<<carnenumero<<endl;
-                                valido = false;
-                                system("pause");
-                                system("cls");
-                                break;
-                            }
-                        }
-                    }
-
-                    } while (!valido);
-                    system("cls");
-
-                //Validar que los nombres no esten vacios y sean solo letras y espacios
-                do{
-
-                    valido = true;
-
-                    cout<<"---Registro de estudiante---"<<endl;
-                    cout<<"Ingrese los nombres del estudiante: ";
-                    getline(cin, nombres);
-
-                    if (nombres.empty()){
-                        cout<<"Error: Los nombres no pueden estar vacios"<<endl;
-                        valido = false;
-                        system("pause");
-                        system("cls");
-                    }
-                    else{
-                        bool tieneletra = false;
-                        for (char c: nombres){
-                            if (isalpha(c)){
-                                tieneletra = true;
-                            }
-                            else if (c != ' '){
-                                cout<<"Error: Los nombres solo deben contener letras y espacios"<<endl;
-                                valido = false;
-                                system("pause");
-                                system("cls");
-                                break;
-                            }
-                        }
-                        if (valido && !tieneletra){
-                            cout<<"Error: Los nombres no pueden ser solo espacios"<<endl;
-                            valido = false;
-                            system("pause");
-                            system("cls");
-                        }
-                    }
-
-                    } while (!valido);
-                    system("cls");
-
-                //Validar que los apellidos no esten vacios y sean solo letras y espacios
-                do{
-
-                    valido = true;
-
-                    cout<<"---Registro de estudiante---"<<endl;
-                    cout<<"Ingrese los apellidos del estudiante: ";
-                    getline(cin, apellidos);
-
-                    if (apellidos.empty()){
-                        cout<<"Error: Los apellidos no pueden estar vacios"<<endl;
-                        valido = false;
-                        system("pause");
-                        system("cls");
-                    }
-                    else{
-                        bool tieneletra = false;
-                        for (char c: apellidos){
-                            if (isalpha(c)){
-                                tieneletra = true;
-                            }
-                            else if (c != ' '){
-                                cout<<"Error: Los apellidos solo deben contener letras y espacios"<<endl;
-                                valido = false;
-                                system("pause");
-                                system("cls");
-                                break;
-                            }
-                        }
-                        if (valido && !tieneletra){
-                            cout<<"Error: Los apellidos no pueden ser solo espacios"<<endl;
-                            valido = false;
-                            system("pause");
-                            system("cls");
-                        }
-                    }
-
-                    } while (!valido);
-                    system("cls");
-
-                //Guardar el estudiante en los arreglos
-
-                estcarne[totalestudiantes] = carnenumero;
-                estnombres[totalestudiantes] = nombres;
-                estapellidos[totalestudiantes] = apellidos;
-                totalestudiantes++;
-
-                cout<<"Estudiante registrado correctamente!"<<endl;
-                system("pause");
-                system("cls");
-
+                registrarEstudiante(estcarne, estnombres, estapellidos, totalestudiantes);
                 break;
             case 3:
                 cout<<"---listado de libros---"<<endl;
@@ -428,28 +444,7 @@ int main()
                     system("cls");
                 break;
             case 4:
-                //Modulo 3: Consultar estudiantes
-
-                cout<<"---listado de estudiantes---"<<endl;
-
-                //Verificar si hay estudiantes registrados
-                if (totalestudiantes == 0){
-                    cout<<"No hay estudiantes registrados"<<endl;
-                }
-                //Recorrer los arreglos y mostrar los datos de cada estudiante
-                else{
-                    cout<<"Total de estudiantes: "<<totalestudiantes<<endl;
-                    cout<<"----------------------------"<<endl;
-                    for (i=0; i<totalestudiantes; i++){
-                        cout<<"Estudiante #"<<i+1<<endl;
-                        cout<<"Carne: "<<estcarne[i]<<endl;
-                        cout<<"Nombres: "<<estnombres[i]<<endl;
-                        cout<<"Apellidos: "<<estapellidos[i]<<endl;
-                        cout<<"----------------------------"<<endl;
-                    }
-                }
-                system("pause");
-                system("cls");
+                consultarEstudiantes(estcarne, estnombres, estapellidos, totalestudiantes);
                 break;
             case 5:
                 cout<<"---Gracias por usar el sistema---"<<endl;
